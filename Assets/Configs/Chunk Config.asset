@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c53693c02d714938bd31bd268b418b29, type: 3}
+  m_Name: Chunk Config
+  m_EditorClassIdentifier: 
+  roomCount: 12
+  specialRoomFrequency: 4
+  fightRooms:
+  - {fileID: 2911685063638860567, guid: e663727ce7264b841bc3a6e05434ad16, type: 3}
+  - {fileID: 6245652758614377376, guid: 4fcbd42c179209441ac4b40a06ded336, type: 3}
+  shopRooms:
+  - {fileID: 5078381417616932964, guid: 592b54947762bec4fbb13dec21188fbf, type: 3}
+  lootRooms:
+  - {fileID: 2925138518278660871, guid: cc12ff1edb9ad364a9512eb82e545477, type: 3}
+  bossRooms:
+  - {fileID: 5643108496264599890, guid: 08a8507e5e6f903468d449f1417486fa, type: 3}
