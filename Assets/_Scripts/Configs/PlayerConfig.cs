@@ -3,7 +3,7 @@ using UnityEngine.Rendering;
 
 namespace _Scripts.Configs
 {
-    [CreateAssetMenu(menuName = "PlayerConfig")]
+    [CreateAssetMenu(fileName = "PlayerConfig", menuName = "Configs")]
     public class PlayerConfig : ScriptableObject
     {
         [SerializeField, Min(10)] private int health;
@@ -12,7 +12,6 @@ namespace _Scripts.Configs
         [SerializeField, Min(0.1f), Range(0.1f, 4)] private float jumpDistance;
         [SerializeField, Min(1)] private float _gravityForce;
         
-
         public int GetHealth() => health;
         public float GetSpeed() => speed;
         public float GetJumpHeight() => jumpHeight;

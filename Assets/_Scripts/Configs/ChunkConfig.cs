@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace _Scripts.Configs
 {
-    [CreateAssetMenu(menuName = "ChunkConfig")]
+    [CreateAssetMenu(fileName = "ChunkConfig", menuName = "Configs")]
     public class ChunkConfig : ScriptableObject
     {
         [SerializeField, Min(4)] private int roomCount = 10;
