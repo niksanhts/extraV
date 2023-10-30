@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace _Scripts.Configs
 {
-    [CreateAssetMenu(fileName = "PlayerConfig", menuName = "Configs")]
+    [CreateAssetMenu(fileName = "WeaponConfig", menuName = "Configs/WeaponConfig")]
     public class WeaponConfig : ScriptableObject
     {
         [Header("Pauses")]
@@ -15,12 +15,7 @@ namespace _Scripts.Configs
 
         [Header("Damage")]
         [SerializeField, Min(0.01f), Range(0.01f, 100f)] private float damage;
-
-        //[Header("Effects")] 
-        //[SerializeField] private AudioClip _shootClip;
-        //[SerializeField] private AudioClip _reloadClip;
-        //[SerializeField] private ParticleSystem _shootParticle;
-
+        
         public float GetFireRate() => fireRate;
         public float GetReloadTime() => reloadTime;
         public int GetMaxBullets() => maxBullets;

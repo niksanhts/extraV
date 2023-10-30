@@ -2,7 +2,7 @@ using System;
 using _Scripts.Interfaces;
 using UnityEngine;
 
-    [SelectionBase]
+    //[SelectionBase]
     [RequireComponent(typeof(Rigidbody))]
     public abstract class Projectile : MonoCache
     { 
@@ -12,7 +12,6 @@ using UnityEngine;
         [Header("Effects")]
         [SerializeField] private bool spawnEffectOnDestroy = true;
         [SerializeField] private ParticleSystem destroyEffectPrefab;
-        //[SerializeField, Min(0f), Range(0,2)] private float destroyEffectLifetime = 1f;
 
         [SerializeField] 
         private ProjectileDisposeType disposeType = ProjectileDisposeType.OnAnyCollision;

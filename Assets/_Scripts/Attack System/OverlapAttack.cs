@@ -7,7 +7,7 @@ namespace _Scripts.Attack_System
     {
         public void PerformAttack()
         {
-            
+            PerformOverlap();
         }
 
         private void PerformOverlap()

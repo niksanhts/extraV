@@ -8,41 +8,35 @@ using Zenject;
 namespace _Scripts.Player
 {
     [RequireComponent(typeof(CharacterController))]
-    public class Movement : MonoCache, IMovable
+    public class Movement : MonoCache
     {
-        [SerializeField] private InputHandler inputHandler;
         private GravityHandler _gravityHandler;
         private JumpHandler _jumpHandler;
         private CharacterController _controller;
 
-        private float _speed = 5;
+        private float _speed;
+        private float _dashDistance;
+
         private Vector3 _moveDirection;
 
         [Inject]
-        private void Init(InputHandler input, GravityHandler gravity, JumpHandler jump, PlayerConfig config)
+        public void Init(PlayerConfig config, GravityHandler gravityHandler, JumpHandler jumpHandler)
         {
             _speed = config.GetSpeed();
-            inputHandler = input;
-            _gravityHandler = gravity;
-            _jumpHandler = jump;
-        }
-
-        private void OnEnable() => inputHandler.JumpPerformed += Jump;
-        private void OnDisable() => inputHandler.JumpPerformed -= Jump;
-
-        private void Awake()
-        {
+            _gravityHandler = gravityHandler;
+            _jumpHandler = new JumpHandler(config.GetJumpTime(),config.GetJumpHeight(), gravityHandler);
             _controller = GetComponent<CharacterController>();
         }
 
-        protected override void OnTick()
-        {
-            _moveDirection = inputHandler.GetInputDirection();
-            _gravityHandler.ApplyGravity(_moveDirection);
-            Move(_moveDirection);
-        }
+        public void Move() =>  _controller.Move(_moveDirection * _speed);
+        public void Dash() => _controller.Move(_moveDirection * _dashDistance);
+        public void Jump() => _controller.Move(_jumpHandler.HandleJump(_moveDirection));
 
-        public void Move(Vector3 direction) => _controller.Move(direction * (_speed * Time.deltaTime));
-        private void Jump() =>  _moveDirection = _jumpHandler.HandleJump(_moveDirection);
+
+        public void UpdateDirection(Vector2 vct)
+        {
+            var vector = new Vector3 { x = vct.x, y = 0, z = vct.y };
+            _moveDirection = _gravityHandler.ApplyGravity(vector) * Time.deltaTime;
+        }
     }
 }

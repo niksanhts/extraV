@@ -10,6 +10,7 @@ namespace _Scripts.Installers
     public class PlayerInstaller : MonoInstaller
     {
         [SerializeField] private PlayerConfig config;
+        [SerializeField] private InputHandler _inputHandler;
         public override void InstallBindings()
         {
             //InstallInput();
@@ -21,14 +22,13 @@ namespace _Scripts.Installers
         {
             var gravityHandler = new GravityHandler(config.GetGravityForce());
             Container.BindInstance(gravityHandler).AsSingle();
-            Container.BindInstance(new JumpHandler(config, gravityHandler)).AsSingle();
         }
 
         // ReSharper disable Unity.PerformanceAnalysis
         private void InstallInput()
         {
             Container.BindInstance(new PlayerInput()).AsSingle();
-            Container.BindInstance(new InputHandler()).AsSingle();
+            Container.BindInstance(_inputHandler).AsSingle();
         }
     }
 }

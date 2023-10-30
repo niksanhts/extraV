@@ -10,21 +10,23 @@ namespace _Scripts.Weapon
         
         private Animator _animator;
         private ParticleSystem _particle;
+        private Weapon _weapon;
         
         private void Awake()
         {
+            _weapon = GetComponent<Weapon>();
             _animator = GetComponent<Animator>();
         }
 
         private void OnEnable()
         {
-            Weapon.OnShot += PlayShoot;
-            Weapon.OnReload += PlayReload;
+            _weapon.OnShot += PlayShoot;
+            _weapon.OnReload += PlayReload;
         }
         private void OnDisable()
         {
-            Weapon.OnShot -= PlayShoot;
-            Weapon.OnReload -= PlayReload;
+            _weapon.OnShot -= PlayShoot;
+            _weapon.OnReload -= PlayReload;
         }
         public void PlayShoot()
         {

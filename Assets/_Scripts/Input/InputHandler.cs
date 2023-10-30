@@ -1,26 +1,43 @@
-﻿using System;
+﻿using _Scripts.Player;
 using UnityEngine;
-using Vector3 = UnityEngine.Vector3;
+using UnityEngine.InputSystem;
+using Zenject;
 
 namespace _Scripts.Input
 {
     public class InputHandler : MonoCache
     {
-        public Action JumpPerformed;
-        
+        [SerializeField] private Movement _movement;
+
         private PlayerInput _input;
         private Vector2 _inputVector;
 
-        public InputHandler() => _input = new PlayerInput();
+        [Inject]
+        public void Init(PlayerInput input)
+        {
+            _input = input;
+            _movement = GetComponent<Movement>();
+        }
 
         protected override void OnTick()
         {
             var vector = _input.Player.Move.ReadValue<Vector2>();
-            
-            if(true)
-                JumpPerformed?.Invoke();
-        }
 
-        public Vector3 GetInputDirection() => new Vector3() { x = _inputVector.x, y = 0, z = _inputVector.y };
+            if (vector != Vector2.zero)
+            {
+                _movement.UpdateDirection(vector);
+                _movement.Move();
+            }
+
+            if (_input.Player.Dash.phase == InputActionPhase.Performed)
+            {
+                _movement.Dash();
+            }
+            
+            if (_input.Player.Jump.phase == InputActionPhase.Performed)
+            {
+                _movement.Jump();
+            }
+        }
     }
 }
