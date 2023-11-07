@@ -13,6 +13,11 @@ MonoBehaviour:
   m_Name: Player Config
   m_EditorClassIdentifier: 
   health: 250
-  speed: 1
-  jumpHeight: 1
-  jumpDistance: 1.4
+  speed: 10
+  dashDistance: 0.6
+  dashRecoveryTime: 2.2
+  dashRate: 0.34
+  dashCount: 4
+  jumpHeight: 6
+  jumpTime: 20
+  gravityForce: 8

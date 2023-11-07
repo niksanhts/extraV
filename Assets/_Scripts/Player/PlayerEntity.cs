@@ -1,14 +1,13 @@
 using System;
 using _Scripts.Configs;
 using _Scripts.Interfaces;
+using UnityEngine;
 using Zenject;
 
 namespace _Scripts.Player
 {
-    public class PlayerEntity : IDamageable
+    public class PlayerEntity : MonoBehaviour, IDamageable
     {
-        public static Action<float> HealthChanged;
-        public static Action PlayerDied;
 
         private float _currentHealth;
         private float _maxHealth;
@@ -18,6 +17,8 @@ namespace _Scripts.Player
         {
             _maxHealth = config.GetHealth();
             _currentHealth = _maxHealth;
+            EventMediator.PerformHealthChanged(_currentHealth);
+            Debug.Log(_currentHealth);
         }
         
         public void ApplyDamage(float damage)
@@ -27,9 +28,10 @@ namespace _Scripts.Player
             
             if (_currentHealth - damage <= 0)
                 Die();
-            damage -= damage;
+            _currentHealth -= damage;
             
-            HealthChanged?.Invoke(_currentHealth);
+            EventMediator.PerformHealthChanged(_currentHealth);
+            Debug.Log("Damage Applied:" + damage);
         }
 
         public void Heal(float value)
@@ -41,12 +43,12 @@ namespace _Scripts.Player
             if (_currentHealth > _maxHealth)
                 _currentHealth = _maxHealth;
             
-            HealthChanged?.Invoke(_currentHealth);
+            EventMediator.PerformHealthChanged(_currentHealth);
         }
 
         private void Die()
         {
-            PlayerDied?.Invoke();
+            EventMediator.PerformPlayerDied();
         }
     }
 }

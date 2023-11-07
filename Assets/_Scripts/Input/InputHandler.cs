@@ -1,43 +1,72 @@
 ﻿using _Scripts.Player;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Zenject;
+using UnityEngine.Serialization;
 
 namespace _Scripts.Input
 {
-    public class InputHandler : MonoCache
+    public class InputHandler : MonoBehaviour
     {
-        [SerializeField] private Movement _movement;
+        [SerializeField] private WeaponHolder weaponHolder;
+        [SerializeField] private Movement movement;
+        [SerializeField] private Vision vision;
 
         private PlayerInput _input;
-        private Vector2 _inputVector;
-
-        [Inject]
-        public void Init(PlayerInput input)
+        
+        public void Awake()
         {
-            _input = input;
-            _movement = GetComponent<Movement>();
+            _input = new PlayerInput();
+            
+            if(movement == null)
+                movement = GetComponent<Movement>();
+            
+            if(vision == null)
+                vision = FindObjectOfType(typeof(Vision)).GetComponent<Vision>();
+            
+            if(weaponHolder == null)
+                weaponHolder = FindObjectOfType(typeof(WeaponHolder)).GetComponent<WeaponHolder>();
         }
 
-        protected override void OnTick()
+        private void Update()
         {
-            var vector = _input.Player.Move.ReadValue<Vector2>();
+            var moveVector = _input.Player.Move.ReadValue<Vector2>();
+            var lookVector = _input.Player.Look.ReadValue<Vector2>();
+            var scroll = _input.Player.SwitchWeapon.ReadValue<float>();
+            
+            movement.UpdateDirection(moveVector);
+            movement.TryMove();
 
-            if (vector != Vector2.zero)
+            if (lookVector != Vector2.zero)
             {
-                _movement.UpdateDirection(vector);
-                _movement.Move();
+                vision.Look(lookVector);
             }
 
             if (_input.Player.Dash.phase == InputActionPhase.Performed)
             {
-                _movement.Dash();
+                movement.TryDash();
             }
             
             if (_input.Player.Jump.phase == InputActionPhase.Performed)
             {
-                _movement.Jump();
+                movement.TryJump();
+            }
+            
+            switch (scroll)
+            {
+                case < 0: weaponHolder.TakePreviousWeapon();
+                    break;
+                case > 0: weaponHolder.TakeNextWeapon();
+                    break;
+            }
+            
+            if (_input.Player.Shoot.phase == InputActionPhase.Performed)
+            {
+                weaponHolder.PerformShoot();
             }
         }
+
+        private void OnEnable() => _input.Enable();
+        private void OnDisable() => _input.Disable();
     }
 }

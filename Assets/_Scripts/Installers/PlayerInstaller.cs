@@ -11,19 +11,14 @@ namespace _Scripts.Installers
     {
         [SerializeField] private PlayerConfig config;
         [SerializeField] private InputHandler _inputHandler;
+        
+        // ReSharper disable Unity.PerformanceAnalysis
         public override void InstallBindings()
         {
+            Container.Bind<PlayerConfig>().FromInstance(config).AsSingle().NonLazy();
             //InstallInput();
-            //InstallMovement();
         }
-
-        // ReSharper disable Unity.PerformanceAnalysis
-        private void InstallMovement()
-        {
-            var gravityHandler = new GravityHandler(config.GetGravityForce());
-            Container.BindInstance(gravityHandler).AsSingle();
-        }
-
+        
         // ReSharper disable Unity.PerformanceAnalysis
         private void InstallInput()
         {

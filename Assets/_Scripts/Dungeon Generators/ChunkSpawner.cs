@@ -1,4 +1,5 @@
 ﻿using _Scripts.Interfaces;
+using _Scripts.Patterns.Singleton;
 using UnityEngine;
 using Zenject;
 
@@ -11,12 +12,13 @@ namespace _Scripts.Dungeon_Generators
         private IDungeonGenerator _generator;
 
         [Inject]
-        public void Init(IDungeonGenerator generator) => _generator = generator;
-        private void Awake()
+        public void Init(IDungeonGenerator generator)
         {
+            _generator = generator;
             _startPosition = gameObject.GetComponent<Transform>();
+            
+            Spawn();
         }
-
         public void Spawn()
         {
             var position = _startPosition.position;

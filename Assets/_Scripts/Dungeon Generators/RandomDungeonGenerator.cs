@@ -25,7 +25,6 @@ namespace _Scripts.Dungeon_Generators
             _shopRooms = config.ShopRooms;
             _lootRooms = config.LootRooms;
             _bossRooms = config.BossRooms;
-
         }
         
         public Chunk GenerateChunk()
