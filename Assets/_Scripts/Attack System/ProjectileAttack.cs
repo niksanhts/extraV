@@ -1,6 +1,7 @@
 ﻿using _Scripts;
 using _Scripts.Interfaces;
 using _Scripts.Weapon;
+using _Scripts.Weapon.Base;
 using UnityEngine;
 
     [RequireComponent(typeof(Weapon))]
@@ -23,7 +24,7 @@ using UnityEngine;
         {
             var projectile = ObjectPool.Spawn(projectilePrefab, firePoint.position, firePoint.rotation)
                             .GetComponent<Projectile>();
-            projectile.SetDamage(_damage);
+            projectile.Init(_damage);
             projectile.rigidbody.AddForce(firePoint.forward * force, ForceMode.Impulse);
         }
         

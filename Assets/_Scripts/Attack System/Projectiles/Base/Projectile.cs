@@ -17,17 +17,22 @@ using UnityEngine;
         private ProjectileDisposeType disposeType = ProjectileDisposeType.OnAnyCollision;
 
         [SerializeField] private float lifeTime;
-        private float currentLifeTime;
         
+        private float currentLifeTime;
         private float _damage;
         
         private void OnValidate() => rigidbody = GetComponent<Rigidbody>();
+
+        public void Init(float damage)
+        {
+            SetDamage(damage);
+            currentLifeTime = lifeTime;
+        }
 
         public void SetDamage(float value)
         {
             if (value < 0)
                 throw new ArgumentOutOfRangeException(nameof(value));
-
             _damage = value;
         }
 

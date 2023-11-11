@@ -15,6 +15,7 @@ namespace _Scripts.Configs
         
         [Header("Dash")]
         [SerializeField, Min(0.1f)] private float dashDistance;
+        [SerializeField, Min(0.1f)] private float dashSpeed;
         [SerializeField, Min(0.1f)] private float dashRecoveryTime;
         [SerializeField, Min(0.1f)] private float dashRate;
         [SerializeField, Min(1)] private int dashCount;
@@ -27,6 +28,7 @@ namespace _Scripts.Configs
         public int GetHealth() => health;
         public float GetSpeed() => speed;
         public float GetDashDistance() => dashDistance;
+        public float GetDashSpeed() => dashSpeed;
         public float GetDashRecoveryTime() => dashRecoveryTime;
         public float GetDashRate() => dashRate;
         public int GetDashCount() => dashCount;

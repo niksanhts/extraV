@@ -4,17 +4,16 @@ using UnityEngine;
 
 namespace _Scripts.Player
 {
-    public class WeaponHolder : MonoBehaviour, IWeaponPicker
+    public class WeaponHolder : MonoBehaviour
     {
-        [SerializeField] private List<Weapon.Weapon> _weapons = new List<Weapon.Weapon>();
+        [SerializeField] private List<Weapon.Base.Weapon> _weapons = new List<Weapon.Base.Weapon>();
         private int currentWeaponIndex = 0;
         
-        public void PickUpWeapon(Weapon.Weapon weapon)
+        public void Add(Weapon.Base.Weapon weapon)
         {
-            ObjectPool.Despawn(weapon);
-            var obj= ObjectPool.Spawn(weapon, transform.position, transform.rotation, this);
-            _weapons.Add(weapon.GetComponent<Weapon.Weapon>());
-            SelectWeapon(currentWeaponIndex - 1);
+            weapon.transform.position = transform.position;
+            weapon.transform.rotation = transform.rotation;
+            _weapons.Add(weapon.GetComponent<Weapon.Base.Weapon>());
         }
 
         public void PerformShoot() => _weapons[currentWeaponIndex].TryShoot();

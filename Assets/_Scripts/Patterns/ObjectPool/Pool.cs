@@ -13,28 +13,17 @@ public class Pool
     {
         private Queue<GameObject> _objects = new();
         private GameObject _prefab;
+        public Pool(GameObject prefab) => _prefab = prefab;
 
-        public Pool(GameObject prefab)
-        {
-            _prefab = prefab;
-            Cache(10);
-        }
-        
-        public void Cache(int number)
-        {
-            for (var i = 0; i < number; i++)
-            {
-                Return(Get());
-            }
-        }
+        public GameObject Get() => Get(null);
 
-        public GameObject Get()
+        public GameObject Get(Component parent)
         {
             GameObject gameObject;
         
             if (_objects.Count == 0)
             {
-                gameObject = Object.Instantiate(_prefab);
+                gameObject = (parent == null) ? Object.Instantiate(_prefab) : Object.Instantiate(_prefab, parent.transform);
                 gameObject.name = _prefab.name;
                 return gameObject;
             }

@@ -1,5 +1,6 @@
 using _Scripts.Interfaces;
 using _Scripts.Weapon;
+using _Scripts.Weapon.Base;
 using UnityEngine;
 using Random = UnityEngine.Random;
 

@@ -6,19 +6,18 @@ using Zenject;
 
 namespace _Scripts.Dungeon_Generators
 {
-    public class ChunkSpawner : MonoBehaviour
+    public class ChunkSpawner
     {
         private Transform _startPosition;
         private IDungeonGenerator _generator;
 
         [Inject]
-        public void Init(IDungeonGenerator generator)
+        public ChunkSpawner(IDungeonGenerator generator)
         {
             _generator = generator;
-            _startPosition = gameObject.GetComponent<Transform>();
-            
-            Spawn();
+            _startPosition = SpawnChunkStart.Instance.transform;
         }
+        
         public void Spawn()
         {
             var position = _startPosition.position;

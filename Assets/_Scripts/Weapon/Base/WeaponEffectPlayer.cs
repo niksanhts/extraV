@@ -10,24 +10,14 @@ namespace _Scripts.Weapon
         [SerializeField] private ParticleSystem _particle;
         
         private Animator _animator;
-        private Weapon _weapon;
+        private Base.Weapon _weapon;
         
         private void Awake()
         {
-            _weapon = GetComponent<Weapon>();
+            _weapon = GetComponent<Base.Weapon>();
             _animator = GetComponent<Animator>();
         }
-
-        private void OnEnable()
-        {
-            EventMediator.Reloaded += PlayReload;
-            EventMediator.ShotPerformed += PlayShoot;
-        }
-        private void OnDisable()
-        {
-            EventMediator.Reloaded -= PlayReload;
-            EventMediator.ShotPerformed -= PlayShoot;
-        }
+        
         public void PlayShoot()
         {
             _particle.Play();

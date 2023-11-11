@@ -1,4 +1,5 @@
-﻿using _Scripts.Configs;
+﻿using System.Collections;
+using _Scripts.Configs;
 using UnityEngine;
 using Zenject;
 
@@ -13,20 +14,29 @@ namespace _Scripts.Player
         private DashTimer _dashTimer;
 
         private float _speed;
+        
         private float _dashDistance;
+        private float _dashSpeed = 20f;
+        private float _dashTime;
 
         private Vector3 _moveDirection;
 
         [Inject]
         public void Init(PlayerConfig config)
         {
+            _controller = GetComponent<CharacterController>();
+            
             _speed = config.GetSpeed();
+            
             _dashDistance = config.GetDashDistance();
+            _dashSpeed = config.GetDashSpeed();
+            
             _gravityHandler = new GravityHandler(config.GetGravityForce());
             _jumpHandler = new JumpHandler(config.GetJumpTime(), config.GetJumpHeight(), ref _gravityHandler);
-            _controller = GetComponent<CharacterController>();
+            
             _dashTimer = GetComponent<DashTimer>();
             _dashTimer.Init(config.GetDashCount(), config.GetDashRecoveryTime(), config.GetDashRate());
+            _dashTime = _dashDistance / _dashSpeed;
         }
 
         public void TryMove()
@@ -37,8 +47,8 @@ namespace _Scripts.Player
         public void TryDash()
         {
             if (_dashTimer.CheckAbility())
-                Dash();
-            
+                StartCoroutine(Dash());
+
         }
 
         public void TryJump()
@@ -56,10 +66,19 @@ namespace _Scripts.Player
 
         private void Jump() => _jumpHandler.HandleJump(ref _moveDirection);
 
-        private void Dash()
+        private IEnumerator Dash()
         {
+            var startTime = Time.time;
             _dashTimer.PerformAbility();
-            _controller.Move(_moveDirection * _dashDistance);
+
+            var dashDirection = _moveDirection;
+            
+            while (startTime + _dashTime > Time.time)
+            {
+                _controller.Move(dashDirection * (_dashSpeed * Time.deltaTime));
+                yield return null;
+            }
+            
         }
     
         private void Move() => _controller.Move(_moveDirection * Time.deltaTime);

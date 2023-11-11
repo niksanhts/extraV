@@ -13,7 +13,7 @@ using UnityEngine;
             if (prefab != null && _pools.ContainsKey(prefab.name) == false)
                 CreatePool(prefab);
 
-            var gameObject = _pools[prefab.name].Get();
+            var gameObject = parent ? _pools[prefab.name].Get() : _pools[prefab.name].Get(parent);
             
             gameObject.SetActive(true);
             
@@ -30,14 +30,8 @@ using UnityEngine;
             if (_pools.ContainsKey(gameObject.name))
                 _pools[gameObject.name].Return(gameObject);
             else
-                Object.Destroy(component);
+                Object.Destroy(gameObject);
             
-        }
-
-        public static void Cache(int number, Component prefab)
-        {
-            CreatePool(prefab.gameObject);
-            _pools[prefab.name].Cache(number);
         }
 
         private static void CreatePool(GameObject prefab) => _pools[prefab.name] = new Pool(prefab);

@@ -3,7 +3,7 @@ using _Scripts.Configs;
 using _Scripts.Interfaces;
 using UnityEngine;
 
-namespace _Scripts.Weapon
+namespace _Scripts.Weapon.Base
 {
     [RequireComponent(typeof(WeaponEffectPlayer))]
     public abstract class Weapon : MonoCache
@@ -25,7 +25,7 @@ namespace _Scripts.Weapon
         private float nextShotTime = 0;
         public float Damage { get; private set; }
 
-        public void Awake()
+        private void Init()
         {
             Damage = _config.GetDamage();
             _fireRate = _config.GetFireRate();
@@ -40,7 +40,17 @@ namespace _Scripts.Weapon
             _lastShotTime = Time.time;
         }
 
-        private void OnEnable() => EventMediator.PerformBulletCountChanged(_bulletLeft, _maxBullets);
+        private void Awake()
+        {
+            Init();
+        }
+
+        private void OnEnable()
+        {
+            EventMediator.PerformBulletCountChanged(_bulletLeft, _maxBullets);
+            Init();
+        }
+    
 
         public void TryShoot()
         {
@@ -65,8 +75,8 @@ namespace _Scripts.Weapon
             Invoke(nameof(SetShootingAble), _reloadTime);
             _bulletLeft = _maxBullets;
             
-            EventMediator.PerformReloaded();
             EventMediator.PerformBulletCountChanged(_bulletLeft, _maxBullets);
+            _effectPlayer.PlayShoot();
         }
         
         private void Shoot()
@@ -76,7 +86,7 @@ namespace _Scripts.Weapon
             _bulletLeft--;
             
             EventMediator.PerformBulletCountChanged(_bulletLeft, _maxBullets);
-            EventMediator.PerformShot();
+            _effectPlayer.PlayShoot();
         }
 
         private void SetShootingAble() => _shootingAble = true;

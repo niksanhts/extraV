@@ -8,12 +8,19 @@ namespace _Scripts.Enviarment
     [RequireComponent(typeof(Collider))]
     public class GunPedestal : MonoCache
     {
-        [SerializeField] private Weapon.Weapon weapon;
+        [SerializeField] private Weapon.Base.Weapon weapon;
+        [SerializeField] private Transform holder;
+
+        private void Start()
+        {
+            ObjectPool.Spawn(weapon, holder.position, holder.rotation, holder);
+        }
+
         private void OnTriggerEnter(Collider other)
         {
-            if (!other.gameObject.TryGetComponent(out IWeaponPicker weaponPicker)) 
+            if (!other.gameObject.TryGetComponent(out IWeaponEquip weaponEquip)) 
                 return;
-            weaponPicker.PickUpWeapon(weapon);
+            weaponEquip.EquipWeapon(weapon);
             ObjectPool.Despawn(this);
         }
     }
